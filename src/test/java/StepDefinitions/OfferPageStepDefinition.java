@@ -23,17 +23,23 @@ public class OfferPageStepDefinition {
     @When("user searched for {string} shortname in offers page")
     public void userSearchedForShortnameInOffersPage(String shortName) throws InterruptedException {
 
+        switchToOffersPage();
+        testContextSetup.driver.findElement(By.cssSelector("#search-field")).sendKeys(shortName);
+        Thread.sleep(1000);
+        offerPageProductName=testContextSetup.driver.findElement(By.cssSelector("tr td:nth-child(1)")).getText().trim();
+        System.out.println(offerPageProductName);
+
+
+    }
+    public void switchToOffersPage(){
+        //if we switched to offer page -> skip below part
+        //if(testContextSetup.driver.getCurrentUrl().equalsIgnoreCase("https://rahulshettyacademy.com/seleniumPractise/#/offers"))
         testContextSetup.driver.findElement(By.linkText("Top Deals")).click();
         Set<String> windows= testContextSetup.driver.getWindowHandles();
         Iterator<String> it =windows.iterator();
         String parentWindow=it.next();
         String childWindow= it.next();
         testContextSetup.driver.switchTo().window(childWindow);
-        testContextSetup.driver.findElement(By.cssSelector("#search-field")).sendKeys(shortName);
-        Thread.sleep(1000);
-        offerPageProductName=testContextSetup.driver.findElement(By.cssSelector("tr td:nth-child(1)")).getText().trim();
-        System.out.println(offerPageProductName);
-
 
     }
 
