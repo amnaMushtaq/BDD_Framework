@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import pageObjects.LandingPage;
+import pageObjects.OffersPage;
 import utilis.TestContextSetup;
 
 import java.util.Iterator;
@@ -24,9 +26,11 @@ public class OfferPageStepDefinition {
     public void userSearchedForShortnameInOffersPage(String shortName) throws InterruptedException {
 
         switchToOffersPage();
-        testContextSetup.driver.findElement(By.cssSelector("#search-field")).sendKeys(shortName);
+        OffersPage offersPage=testContextSetup.pageObjectManager.OffersPage();
+        //OffersPage offersPage=new OffersPage(testContextSetup.driver);
+        offersPage.searchItem(shortName);
         Thread.sleep(1000);
-        offerPageProductName=testContextSetup.driver.findElement(By.cssSelector("tr td:nth-child(1)")).getText().trim();
+        offerPageProductName=offersPage.getProductName().trim();
         System.out.println(offerPageProductName);
 
 
@@ -34,12 +38,10 @@ public class OfferPageStepDefinition {
     public void switchToOffersPage(){
         //if we switched to offer page -> skip below part
         //if(testContextSetup.driver.getCurrentUrl().equalsIgnoreCase("https://rahulshettyacademy.com/seleniumPractise/#/offers"))
-        testContextSetup.driver.findElement(By.linkText("Top Deals")).click();
-        Set<String> windows= testContextSetup.driver.getWindowHandles();
-        Iterator<String> it =windows.iterator();
-        String parentWindow=it.next();
-        String childWindow= it.next();
-        testContextSetup.driver.switchTo().window(childWindow);
+        LandingPage landingPage=testContextSetup.pageObjectManager.LandingPage();
+        landingPage.selectTopDeals();
+        testContextSetup.genericUtilis.SwitchWindowToChild();
+
 
     }
 
@@ -48,6 +50,6 @@ public class OfferPageStepDefinition {
 
     @Then("Validate product name in offers page matches with Landing Page")
     public void validateProductNameInOffersPageMatchesWithLandingPage() {
-        Assert.assertEquals(offerPageProductName,offerPageProductName);
+        Assert.assertEquals(offerPageProductName,testContextSetup.landingPageProductName);
     }
 }
