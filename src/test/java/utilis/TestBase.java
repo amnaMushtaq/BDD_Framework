@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.Properties;
 
 public class TestBase {
@@ -27,6 +28,7 @@ public class TestBase {
             if (prop.getProperty("browser").equalsIgnoreCase("firefox")){
                 driver=new FirefoxDriver();
             }
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
             driver.get(url);
             driver.manage().window().maximize();
         }

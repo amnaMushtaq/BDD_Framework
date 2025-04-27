@@ -1,5 +1,6 @@
 package StepDefinitions;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,28 +18,32 @@ import java.util.Set;
 public class OfferPageStepDefinition {
     TestContextSetup testContextSetup;
     public String offerPageProductName;
-    public OfferPageStepDefinition(TestContextSetup testContextSetup){
-        this.testContextSetup=testContextSetup;
+    OffersPage offersPage;
+
+    public OfferPageStepDefinition(TestContextSetup testContextSetup) {
+        this.testContextSetup = testContextSetup;
+        this.offersPage = testContextSetup.pageObjectManager.OffersPage();
 
     }
 
-    @When("user searched for {string} shortname in offers page")
-    public void userSearchedForShortnameInOffersPage(String shortName) throws InterruptedException {
+    @When("^user searched for (.+) shortname in offers page$")
+    public void userSearchedForShortnameInOffersPage(String shortName)  {
 
         switchToOffersPage();
-        OffersPage offersPage=testContextSetup.pageObjectManager.OffersPage();
+
         //OffersPage offersPage=new OffersPage(testContextSetup.driver);
         offersPage.searchItem(shortName);
-        Thread.sleep(1000);
-        offerPageProductName=offersPage.getProductName().trim();
+       // Thread.sleep(1000);
+        offerPageProductName = offersPage.getProductName().trim();
         System.out.println(offerPageProductName);
 
 
     }
-    public void switchToOffersPage(){
+
+    public void switchToOffersPage() {
         //if we switched to offer page -> skip below part
         //if(testContextSetup.driver.getCurrentUrl().equalsIgnoreCase("https://rahulshettyacademy.com/seleniumPractise/#/offers"))
-        LandingPage landingPage=testContextSetup.pageObjectManager.LandingPage();
+        LandingPage landingPage = testContextSetup.pageObjectManager.LandingPage();
         landingPage.selectTopDeals();
         testContextSetup.genericUtilis.SwitchWindowToChild();
 
@@ -46,10 +51,11 @@ public class OfferPageStepDefinition {
     }
 
 
-
-
     @Then("Validate product name in offers page matches with Landing Page")
     public void validateProductNameInOffersPageMatchesWithLandingPage() {
-        Assert.assertEquals(offerPageProductName,testContextSetup.landingPageProductName);
+        Assert.assertEquals(offerPageProductName, testContextSetup.landingPageProductName);
     }
 }
+
+
+
