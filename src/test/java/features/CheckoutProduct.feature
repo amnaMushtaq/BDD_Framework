@@ -10,7 +10,7 @@ Feature: Place the order for Products
 
     Examples:
       | Name | Quantity |
- #     | Tom  | 3        |
-#      | Car | 4         |
+      | Tom  | 3        |
+      | Car | 4         |
       | Beet | 2        |
 
