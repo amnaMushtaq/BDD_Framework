@@ -20,7 +20,7 @@ public class Hooks {
     }
     @After
     public void AfterScenario(Scenario scenario) throws IOException {
-        //testContextSetup.testBase.WebDriverManger().quit();
+        testContextSetup.testBase.WebDriverManger().quit();
 
     }
     @AfterStep()

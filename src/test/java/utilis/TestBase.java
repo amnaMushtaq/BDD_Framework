@@ -19,13 +19,16 @@ public class TestBase {
         Properties prop=new Properties();
         prop.load(fis);
         String url=prop.getProperty("QAUrl");
+        String browser_properties=prop.getProperty("browser"); // get the browser details from global.properties file
+        String browser_maven=System.getProperty(("browser")); // get the browser value from terminal passed as parameter -Dbrowser=chrome/firefox
+        String browser=browser_maven!=null ? browser_maven: browser_properties; //it will check if the browser parameter is passed in terminal then that value should be executed else it will get the value from global.properties file
 
 
         if (driver == null) { //driver should be initialized only once
-            if(prop.getProperty("browser").equalsIgnoreCase("chrome")) {
+            if(browser.equalsIgnoreCase("chrome")) {
                 driver = new ChromeDriver();
             }
-            if (prop.getProperty("browser").equalsIgnoreCase("firefox")){
+            if (browser.equalsIgnoreCase("firefox")){
                 driver=new FirefoxDriver();
             }
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
